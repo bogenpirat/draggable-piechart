@@ -1,0 +1,80 @@
+<head>
+    <link href="example.css" rel="stylesheet" type="text/css">
+    <script src="draggable-piechart.js"></script>
+
+</head>
+
+<body>
+    <div id="piechart-controls">
+        <canvas id="piechart" width="400" height="400">Your browser is too old!</canvas>
+    </div>
+
+</body>
+<script>
+    (function () {
+        function ready(fn) {
+            if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+                fn();
+            } else {
+                document.addEventListener('DOMContentLoaded', fn);
+            }
+        }
+        ready(setupPieChart);
+
+        function setupPieChart() {
+            var dimensions = ['walking', 'chess', 'eating', 'sleeping'];
+            var proportions = dimensions.map(function (d, i) {
+                return {
+                    label: d,
+                    proportion: 0.25,
+                    collapsed: false,
+                    format: {
+                        label: d.charAt(0).toUpperCase() + d.slice(1) // capitalise first letter
+                    }
+                }
+            });
+
+            var setup = {
+                canvas: document.getElementById('piechart'),
+                radius: 0.9,
+                collapsing: true,
+                proportions: proportions,
+                drawSegment: drawSegment,
+            };
+
+            var newPie = new DraggablePiechart(setup);
+
+            function drawSegment(context, piechart, centerX, centerY, radius, startingAngle, arcSize, format, collapsed) {
+                if (collapsed) { return; }
+
+                // Draw segment
+                context.save();
+                var endingAngle = startingAngle + arcSize;
+                context.beginPath();
+                context.moveTo(centerX, centerY);
+                context.arc(centerX, centerY, radius, startingAngle, endingAngle, false);
+                context.closePath();
+
+                context.fillStyle = '#f5f5f5';
+                context.fill();
+                context.stroke();
+                context.restore();
+
+                // Draw label on top
+                context.save();
+                context.translate(centerX, centerY);
+                context.rotate(startingAngle);
+
+                var fontSize = Math.floor(context.canvas.height / 25);
+                var dx = radius - fontSize;
+                var dy = centerY / 10;
+
+                context.textAlign = "right";
+                context.font = fontSize + "pt Helvetica";
+                var p = Math.round(100 * arcSize / (Math.PI * 2))
+                context.fillText(format.label + " " + p + "%", dx, dy);
+                context.restore();
+            }
+        }
+    })();
+</script>
