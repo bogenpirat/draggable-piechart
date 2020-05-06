@@ -36,7 +36,7 @@
 
             var setup = {
                 canvas: document.getElementById('piechart'),
-                radius: 0.9,
+                radius: 0.8,
                 collapsing: true,
                 proportions: proportions,
                 drawSegment: drawSegment,
@@ -47,9 +47,11 @@
             function drawSegment(context, piechart, centerX, centerY, radius, startingAngle, arcSize, format, collapsed) {
                 if (collapsed) { return; }
 
+                var endingAngle = startingAngle + arcSize;
+
+
                 // Draw segment
                 context.save();
-                var endingAngle = startingAngle + arcSize;
                 context.beginPath();
                 context.moveTo(centerX, centerY);
                 context.arc(centerX, centerY, radius, startingAngle, endingAngle, false);
@@ -63,7 +65,8 @@
                 // Draw label on top
                 context.save();
                 context.translate(centerX, centerY);
-                context.rotate(startingAngle);
+                var r = startingAngle + (endingAngle - startingAngle) / 3
+                context.rotate(r);
 
                 var fontSize = Math.floor(context.canvas.height / 25);
                 var dx = radius - fontSize;
@@ -73,6 +76,15 @@
                 context.font = fontSize + "pt Helvetica";
                 var p = Math.round(100 * arcSize / (Math.PI * 2))
                 context.fillText(format.label + " " + p + "%", dx, dy);
+
+                context.textAlign = "center";
+                context.textBaseline = "middle";
+                context.globalAlpha = 0.2
+                context.font = fontSize * 3 + "pt Helvetica";
+                context.fillStyle = "#FF0000";
+                context.translate(dx / 1.3, dy);
+                context.rotate(-r);
+                context.fillText(p, 0, 0);
                 context.restore();
             }
         }
