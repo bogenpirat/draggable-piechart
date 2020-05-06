@@ -22,7 +22,7 @@
         ready(setupPieChart);
 
         function setupPieChart() {
-            var dimensions = ['walking', 'chess', 'eating', 'sleeping'];
+            var dimensions = ['walk', 'chess', 'eat', 'sleep'];
             var proportions = dimensions.map(function (d, i) {
                 return {
                     label: d,
@@ -48,7 +48,11 @@
                 if (collapsed) { return; }
 
                 var endingAngle = startingAngle + arcSize;
-
+                var r = startingAngle + (endingAngle - startingAngle) / 3
+                var fontSize = Math.floor(context.canvas.height / 25);
+                var dx = radius - fontSize;
+                var dy = centerY / 10;
+                var p = Math.round(100 * arcSize / (Math.PI * 2))
 
                 // Draw segment
                 context.save();
@@ -56,7 +60,6 @@
                 context.moveTo(centerX, centerY);
                 context.arc(centerX, centerY, radius, startingAngle, endingAngle, false);
                 context.closePath();
-
                 context.fillStyle = '#f5f5f5';
                 context.fill();
                 context.stroke();
@@ -65,18 +68,12 @@
                 // Draw label on top
                 context.save();
                 context.translate(centerX, centerY);
-                var r = startingAngle + (endingAngle - startingAngle) / 3
                 context.rotate(r);
-
-                var fontSize = Math.floor(context.canvas.height / 25);
-                var dx = radius - fontSize;
-                var dy = centerY / 10;
-
                 context.textAlign = "right";
                 context.font = fontSize + "pt Helvetica";
-                var p = Math.round(100 * arcSize / (Math.PI * 2))
                 context.fillText(format.label + " " + p + "%", dx, dy);
 
+                // Draw percent label
                 context.textAlign = "center";
                 context.textBaseline = "middle";
                 context.globalAlpha = 0.2
