@@ -1,0 +1,34 @@
+{
+  "name": "draggable-piechart",
+  "version": "1.0.0",
+  "description": "A javascript class for interactive draggable pie charts on HTML5 canvas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bogenpirat/draggable-piechart.git"
+  },
+  "keywords": [
+    "piechart",
+    "canvas",
+    "draggable",
+    "resizable"
+  ],
+  "author": {
+    "name": "jamesalvarez",
+    "url": "https://github.com/jamesalvarez"
+  },
+  "contributors": [
+    {
+      "name": "bogenpirat",
+      "url": "https://github.com/bogenpirat"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bogenpirat/draggable-piechart/issues"
+  },
+  "homepage": "https://github.com/bogenpirat/draggable-piechart#readme"
+}
